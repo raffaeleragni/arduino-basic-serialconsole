@@ -8,6 +8,7 @@ enum Status {INIT, WAIT_COMMAND, PARSE_COMMAND};
 
 const unsigned long LOG_DELAY = 1000;
 const String COMMAND_HELP = "\n\rHELP\n\r\n\rCommand list:\n\r\n\rhelp: prints help\n\rled start: starts led blinking\n\rled stop: stop led blinking\n\r";
+const String COMMAND_ERROR_NO_COMMAND_FOUND = "Error: no command found";
 
 Status gCommandLineStatus = INIT;
 String gCommand = "";
@@ -95,21 +96,19 @@ void parseCommand(String command)
     {
         Serial.println(COMMAND_HELP);
     }
-    else if (String("led stop").equals(command))
+    else if (command.equals("led stop"))
     {
         gLedBlinkActive = false;
         digitalWrite(LED_BUILTIN, LOW);
     }
-    else if (String("led start").equals(command))
+    else if (command.equals("led start"))
     {
         gLedBlinkActive = true;
     }
-    else if (command.equals(""))
+    // No command found
+    else
     {
-        
-    }
-    else if (command.equals(""))
-    {
-        
+        Serial.println(COMMAND_ERROR_NO_COMMAND_FOUND);
+        Serial.println(COMMAND_HELP);
     }
 }
